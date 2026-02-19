@@ -1,31 +1,33 @@
-import numpy as np
+import math
+import ast
+
+# Put your code for write_matrix(matrix) here.
+def write_matrix(matrix, filename):
+    with open(filename, "w") as f:
+        for row in matrix:
+            if len(row) > 0: # row is the index
+                f.write("%g"% row[0])
+                for i in range(1, len(row)):
+                    f.write(", %g"% row[i])
+            f.write("\n")
+    f.close()
 
 
-def write_matrix(matrix, filename: str) -> None:
-    """
-    Write a matrix to a CSV file.
 
-    Parameters:
-        matrix: A list of lists or np.ndarray.
-        filename (str): Output CSV filename.
-
-    Returns:
-        None
-    """
-    array_matrix = np.array(matrix, dtype=float)
-
-    with open(filename, "w", encoding="utf-8") as file:
-        for row in array_matrix:
-            if len(row) == 0:
-                file.write("\n")
-                continue
-
-            file.write("%g" % row[0])
-            for value in row[1:]:
-                file.write(", %g" % value)
-            file.write("\n")
-
-
+#
+# This is test code. Leave this code in so you can test write_matrix.
+# if it works, the program will finish quietly without error.
+#
 if __name__ == "__main__":
-    # Should run without errors
-    write_matrix([[1.1, 2.2], [4.5, 5.6]], "out.csv")
+    ''' Test Code. Create a matrix and write it to a file. Check that
+        file to see it is correct. Print ERROR if anything is amiss.'''
+    mat = [[1.1, 2.3, 3.5], [5.0, 4.0, 3.0], [6.6, 4.3, 1.2]]
+    write_matrix(mat, "tmp.csv")
+    with open("tmp.csv", "r") as f:
+        s = f.readlines()
+        for i in range(3):
+            t = ast.literal_eval(s[i].strip())
+            for j in range(3):
+                if not math.isclose(t[j], mat[i][j]):
+                    print("ERROR")
+                
